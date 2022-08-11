@@ -4,17 +4,22 @@ const startApp = async () => {
     const tr = tbody?.querySelectorAll("tr");
     const prevBtn = document.querySelector("[data-prevbtn");
     const nextBtn = document.querySelector("[data-nextbtn");
-    let url = "https://randomapi.com/api/8csrgnjw?key=LEIX-GF3O-AG7I-6J84&page=1";
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentIndex = parseInt(urlParams.get('page'));
+    console.log(currentIndex)
+    if(currentIndex <  1 || isNaN(currentIndex)){
+        currentIndex = 1
+    }
+    let url = "https://randomapi.com/api/8csrgnjw?key=LEIX-GF3O-AG7I-6J84&page="  + currentIndex;
     let response = await fetch(url);
-    let currentIndex = 1;
     let dataStore = {};
     if(response.ok){
         let data = await response.json();
         dataStore = data.results[0];
         insertDataRow(tr, dataStore, currentIndex);
-        disableBtn(dataStore.paging, prevBtn, nextBtn);
+        disableBtn(dataStore, currentIndex, prevBtn, nextBtn);
     }
-    
+
     nextBtn?.addEventListener("click", async (e) => {
         currentIndex++;
         if(dataStore[currentIndex]){
@@ -28,12 +33,13 @@ const startApp = async () => {
                     const data = await response.json();
                     dataStore = data.results[0];
                     insertDataRow(tr, dataStore, currentIndex);
-                    disableBtn(dataStore.paging, prevBtn, nextBtn);
                     nextBtn.disabled = false;  // Enable button after processing
                     nextBtn.textContent = "Next";
                 }
             }
         }
+        disableBtn(dataStore, currentIndex, prevBtn, nextBtn);
+
     })
 
     prevBtn?.addEventListener("click", async () => {
@@ -49,12 +55,13 @@ const startApp = async () => {
                     const data = await response.json();
                     dataStore = data.results[0];
                     insertDataRow(tr, dataStore, currentIndex);
-                    disableBtn(dataStore.paging, prevBtn, nextBtn);
                     prevBtn.disabled = false; // Enable button after processing
-                    prevBtn.textContent = "Next";
+                    prevBtn.textContent = "Previous";
                 }
             }
         }
+        disableBtn(dataStore, currentIndex, prevBtn, nextBtn);
+
     })
 
 };
@@ -71,12 +78,28 @@ const insertDataRow = (row, data, currentIndex) => {
     label.textContent  = `Showing Page ${currentIndex}`;
 }
 
-const disableBtn = (value, prevBtn, nextBtn) => {
-    if(!value.next){
-        nextBtn.disabled = true;
+const disableBtn = (data, currentIndex, prevBtn, nextBtn) => {
+    
+    // Disable  previous button
+    if(!data.paging.previous){
+        if(!data[currentIndex - 1]){
+            prevBtn.disabled = true
+        }else{
+            prevBtn.disabled = false
+        }
+    }else{
+        prevBtn.disabled = false
     }
-    if(!value.previous){
-        prevBtn.disabled = true;
+
+    // Disable  Next button
+    if(!data.paging.next){
+        if(!data[currentIndex + 1]){
+            nextBtn.disabled = true
+        }else{
+            nextBtn.disabled = false
+        }
+    }else{
+        nextBtn.disabled = false
     }
 
 }

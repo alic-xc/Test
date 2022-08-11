@@ -19,44 +19,43 @@ const startApp = async () => {
         disableBtn(dataStore, currentIndex, prevBtn, nextBtn);
     }
 
-    nextBtn?.addEventListener("click", async (e) => {
+    nextBtn.addEventListener("click",  (e) => {
+        console.log("Testing")
         currentIndex++;
         if(dataStore[currentIndex]){
             insertDataRow(tr, dataStore, currentIndex);
         } else{
             if(dataStore.paging.next){
-                let response = await fetch(dataStore.paging.next);
                 nextBtn.disabled = true; // Disabled previous button on request to server
                 nextBtn.textContent  = "loading...";
-                if(response.ok){
-                    const data = await response.json();
+                fetch(dataStore.paging.next).then(response => response.json()).then(data => {
                     dataStore = data.results[0];
                     insertDataRow(tr, dataStore, currentIndex);
                     nextBtn.disabled = false;  // Enable button after processing
                     nextBtn.textContent = "Next";
-                }
+                });
+
+
             }
         }
         disableBtn(dataStore, currentIndex, prevBtn, nextBtn);
 
     })
 
-    prevBtn?.addEventListener("click", async () => {
+    prevBtn.addEventListener("click", async () => {
         currentIndex--
         if(dataStore[currentIndex]){
             insertDataRow(tr, dataStore, currentIndex);
         } else{
             if(dataStore.paging.previous){
-                let response = await fetch(dataStore.paging.previous);
                 prevBtn.disabled = true; // Disabled button on request to server
                 prevBtn.textContent  = "loading...";
-                if(response.ok){
-                    const data = await response.json();
+                fetch(dataStore.paging.previous).then(response => response.json()).then(data => {
                     dataStore = data.results[0];
                     insertDataRow(tr, dataStore, currentIndex);
                     prevBtn.disabled = false; // Enable button after processing
                     prevBtn.textContent = "Previous";
-                }
+                })
             }
         }
         disableBtn(dataStore, currentIndex, prevBtn, nextBtn);

@@ -10,17 +10,15 @@ const startApp = async () => {
         currentIndex = 1
     }
     let url = "https://randomapi.com/api/8csrgnjw?key=LEIX-GF3O-AG7I-6J84&page="  + currentIndex;
-    let response = await fetch(url);
-    let dataStore = {};
-    if(response.ok){
-        let data = await response.json();
+    
+    let dataStore = '';
+    fetch(url).then(response =>  response.json()).then( data => {
         dataStore = data.results[0];
         insertDataRow(tr, dataStore, currentIndex);
         disableBtn(dataStore, currentIndex, prevBtn, nextBtn);
-    }
-
-    nextBtn.addEventListener("click",  (e) => {
-        console.log("Testing")
+    } )
+    
+    nextBtn.addEventListener("click",  () => {
         currentIndex++;
         if(dataStore[currentIndex]){
             insertDataRow(tr, dataStore, currentIndex);
@@ -42,7 +40,7 @@ const startApp = async () => {
 
     })
 
-    prevBtn.addEventListener("click", async () => {
+    prevBtn.addEventListener("click", () => {
         currentIndex--
         if(dataStore[currentIndex]){
             insertDataRow(tr, dataStore, currentIndex);

@@ -2,8 +2,8 @@
 const startApp = async () => {
     const tbody = document.querySelector("[data-sink]");
     const tr = tbody?.querySelectorAll("tr");
-    const prevBtn = document.querySelector("[data-prevbtn");
-    const nextBtn = document.querySelector("[data-nextbtn");
+    const prevBtn = document.querySelector("[data-prevbtn]");
+    const nextBtn = document.querySelector("[data-nextbtn]");
     const urlParams = new URLSearchParams(window.location.search);
     let currentIndex = parseInt(urlParams.get('page'));
     if(currentIndex <  1 || isNaN(currentIndex)){
@@ -19,50 +19,46 @@ const startApp = async () => {
     } )
     
     nextBtn.addEventListener("click",  () => {
+        nextBtn.disabled = true; // Disabled previous button on request to server
         currentIndex++;
         if(dataStore[currentIndex]){
             insertDataRow(tr, dataStore, currentIndex);
         } else{
             if(dataStore.paging.next){
-                nextBtn.disabled = true; // Disabled previous button on request to server
-                // nextBtn.textContent  = "loading...";
                 fetch(dataStore.paging.next).then(response => response.json()).then(data => {
                     dataStore = data.results[0];
                     insertDataRow(tr, dataStore, currentIndex);
-                    nextBtn.disabled = false;  // Enable button after processing
-                    nextBtn.textContent = "Next";
+                    
                 });
-
-
             }
         }
-        disableBtn(dataStore, currentIndex, prevBtn, nextBtn);
+        setTimeout( () => disableBtn(dataStore, currentIndex, prevBtn, nextBtn), 500); 
 
     })
 
-    prevBtn.addEventListener("click", () => {
+    prevBtn.addEventListener("click", (e) => {
+        console.log("Accessing nable")
+        e.target.disabled = true
+        console.log("Accessing diabaled")
         currentIndex--
         if(dataStore[currentIndex]){
             insertDataRow(tr, dataStore, currentIndex);
         } else{
             if(dataStore.paging.previous){
-                prevBtn.disabled = true; // Disabled button on request to server
-                // prevBtn.textContent  = "loading...";
                 fetch(dataStore.paging.previous).then(response => response.json()).then(data => {
                     dataStore = data.results[0];
                     insertDataRow(tr, dataStore, currentIndex);
-                    prevBtn.disabled = false; // Enable button after processing
-                    prevBtn.textContent = "Previous";
                 })
             }
         }
-        disableBtn(dataStore, currentIndex, prevBtn, nextBtn);
-
+        
+        setTimeout( () => disableBtn(dataStore, currentIndex, prevBtn, nextBtn), 500); 
     })
 
 };
 
 const insertDataRow = (row, data, currentIndex) => {
+    console.log(currentIndex)
     const label = document.querySelector("[data-pageview");
     row?.forEach( function(tr, index){
         tr.setAttribute("data-entryid", data[currentIndex][index]["id"]);

@@ -12,8 +12,7 @@ const startApp = async () => {
         let data = await response.json();
         dataStore = data.results[0]
         insertDataRow(tr, dataStore, currentIndex)
-        disableBtn(dataStore.paging, prevBtn, nextBtn)
-
+        disableBtn(dataStore.paging, prevBtn, nextBtn)    
     }
     
     nextBtn?.addEventListener('click', async (e) => {
@@ -62,7 +61,7 @@ const startApp = async () => {
 };
 
 const insertDataRow = (row, data, currentIndex) => {
-    console.log(data)
+    const label = document.querySelector('[data-pageview')
     row?.forEach( function(tr, index){
         tr.setAttribute('data-entryid', data[currentIndex][index]['id'] )
         const tableData = tr.querySelectorAll('td')
@@ -70,6 +69,7 @@ const insertDataRow = (row, data, currentIndex) => {
         tableData[1].innerHTML  = data[currentIndex][index]['age']
         tableData[2].innerHTML = data[currentIndex][index]['gender']
     })
+    label.textContent  = `Showing Page ${currentIndex}`
 }
 
 const disableBtn = (value, prevBtn, nextBtn) => {

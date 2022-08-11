@@ -6,7 +6,6 @@ const startApp = async () => {
     const nextBtn = document.querySelector("[data-nextbtn");
     const urlParams = new URLSearchParams(window.location.search);
     let currentIndex = parseInt(urlParams.get('page'));
-    console.log(currentIndex)
     if(currentIndex <  1 || isNaN(currentIndex)){
         currentIndex = 1
     }

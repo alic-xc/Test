@@ -27,7 +27,7 @@ const startApp = async () => {
         } else{
             if(dataStore.paging.next){
                 nextBtn.disabled = true; // Disabled previous button on request to server
-                nextBtn.textContent  = "loading...";
+                // nextBtn.textContent  = "loading...";
                 fetch(dataStore.paging.next).then(response => response.json()).then(data => {
                     dataStore = data.results[0];
                     insertDataRow(tr, dataStore, currentIndex);
@@ -49,7 +49,7 @@ const startApp = async () => {
         } else{
             if(dataStore.paging.previous){
                 prevBtn.disabled = true; // Disabled button on request to server
-                prevBtn.textContent  = "loading...";
+                // prevBtn.textContent  = "loading...";
                 fetch(dataStore.paging.previous).then(response => response.json()).then(data => {
                     dataStore = data.results[0];
                     insertDataRow(tr, dataStore, currentIndex);

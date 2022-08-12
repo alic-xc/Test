@@ -1,20 +1,24 @@
 HOW IT WORKS
 
 Select all HTML elements needed (tr, buttons, label).
-``
+
+```
     const tbody = document.querySelector("[data-sink]");
     const tr = tbody?.querySelectorAll("tr");
     const prevBtn = document.querySelector("[data-prevbtn]");
     const nextBtn = document.querySelector("[data-nextbtn]");
-``
+```
+
 
 (Optional) Search the URL params to check if page param is passed and navigate to the number passed.
-``
+
+```
     let currentIndex = parseInt(urlParams.get('page'));
     if(currentIndex <  1 || isNaN(currentIndex)){
         currentIndex = 1
     }
-``
+```
+
 
 Make initial request to the endpoint to get first page. 
 

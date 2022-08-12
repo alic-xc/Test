@@ -56,7 +56,6 @@ const startApp = async () => {
 };
 
 const insertDataRow = (row, data, currentIndex) => {
-    console.log(currentIndex)
     const label = document.querySelector("[data-pageview");
     row?.forEach( function(tr, index){
         tr.setAttribute("data-entryid", data[currentIndex][index]["id"]);

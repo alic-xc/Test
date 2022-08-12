@@ -41,7 +41,7 @@ Added event listener to buttons to handle navigations and display of  data.
 ```
 
 So, when a button is clicked, its get disabled to prevent running multiple actions at the same time.
-The ``currentIndex`` get increae/decrease, ``dataStore[currentIndex]`` object is checked and ``insertDataRow(tr, dataStore, currentIndex);`` will be executed else it checked whether ``dataStore.paging.next | dataStore.paging.previous`` exist (both contain links for navigating) to run request to the sever and display the new result.
+The ``currentIndex`` get increased/decreased, ``dataStore[currentIndex]`` object is checked and ``insertDataRow(tr, dataStore, currentIndex);`` will be executed else it checked whether ``dataStore.paging.next | dataStore.paging.previous`` exist (both contain links for navigating) to run request to the sever and display the new result.
 
 
 ```

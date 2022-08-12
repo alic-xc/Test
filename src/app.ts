@@ -37,9 +37,7 @@ const startApp = async () => {
     })
 
     prevBtn.addEventListener("click", (e) => {
-        console.log("Accessing nable")
         e.target.disabled = true
-        console.log("Accessing diabaled")
         currentIndex--
         if(dataStore[currentIndex]){
             insertDataRow(tr, dataStore, currentIndex);
